@@ -26,31 +26,24 @@ import re
 
 
 # 식당 데이터 임포트
-df = pd.read_csv('crawling\MarketData_20230930\Seoul_202309.csv', encoding='utf-8-sig')
+df = pd.read_csv('Seoul_2309.csv', encoding='utf-8-sig')
 
-# 음식점 데이터만 쓸 겁니다
-df = df.loc[df['상권업종대분류명'] == '음식']  
+# 다음 구역들만 검색할 겁니다
+name_data = df.loc[(df['행정동명'] == '안암동') | (df['행정동명'] == '보문동') | (df['행정동명'] == '용신동') | (df['행정동명'] == '삼선동') | (df['행정동명'] == '청량리동') | (df['행정동명'] == '종암동') | (df['행정동명'] == '동선동')]
 
-# 다음과 같은 칼럼만 있으면 됩니다
-df = df[['상호명', '상권업종중분류명', '상권업종소분류명', '표준산업분류명', '행정동명', '위도', '경도']]
-
-# 그 중에서도 흑석동과 상도1동만 쓸 겁니다.
-df = df.loc[(df['행정동명'] == '안암동') | (df['행정동명'] == '보문동') | (df['행정동명'] == '용신동') | (df['행정동명'] == '삼선동') | (df['행정동명'] == '청량리동') | (df['행정동명'] == '종암동') | (df['행정동명'] == '동선동')]
-
-print(df)
-
-"""
-#지역명이 포함된 식당명을 변수로 지정
-items = name_data['name']
-print(items)
+name_data.to_csv("anam.csv", index=False)
 
 #검색할 식당 데이터와 url을 담을 데이터 프레임 생성
-df = pd.DataFrame(columns=['name', 'naverURL'])
+df = pd.DataFrame(columns=['name', 'naverURL', 'score', 'reviews_num', 'type', 'latitude', 'longitude'])
 
 #데이터 프레임이 잘 만들어졌는지 확인
-df['name'] = items
+df['name'] = name_data['상호명']
+df['type'] = name_data['상권업종소분류명']
+df['latitude'] = name_data['위도']
+df['longitude'] = name_data['경도']
 df
 
+"""
 # 식당 url 얻기
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
