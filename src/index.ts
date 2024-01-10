@@ -18,7 +18,7 @@ declare module 'express-session' {
     }
 }
 
-const SESSION_SECRET = process.env;
+const SESSION_SECRET = String(process.env);
 
 app.use(session({
     secret: SESSION_SECRET,
