@@ -24,4 +24,5 @@ const verifyPassword = async (password: string, hashedPassword: string) => {
     return Buffer.compare(digest, storedDigest) === 0;
 };
 
-module.exports = { generatePassword, verifyPassword };
+//module.exports = { generatePassword, verifyPassword };
+export default { generatePassword, verifyPassword };

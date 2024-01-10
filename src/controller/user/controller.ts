@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import UserService from '../../service/user.service';
 import CreateUserInput from '../../type/user/create.input';
 import { BadRequestError } from '../../util/customErrors';
+const { generatePassword, verifyPassword } = require('../../util/authentication');
 
 // 예시 controller입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
 
@@ -61,7 +62,7 @@ export const signIn: RequestHandler = async (req, res, next) => {
 
     req.session.user = {
       id: user.id,
-      username: username,
+      username: user.username,
     };
     return res.redirect("/");
   } catch (error) {
