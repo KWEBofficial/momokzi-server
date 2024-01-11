@@ -44,6 +44,7 @@ export const signUp: RequestHandler = async (req, res, next) => {
     const user = await UserService.saveUser(createUserInput);
 
     res.status(201).json(user.id);
+    console.log("회원가입 시도");
   } catch (error) {
     next(error);
   }

@@ -4,7 +4,7 @@ const crypt = require('crypto');
 const pbkdf2 = util.promisify(crypt.pbkdf2);
 const randomBytes = util.promisify(crypt.randomBytes);
 
-const generatePassword = async (password: string) => {
+export const generatePassword = async (password: string) => {
     const ALGO = 'sha512';
     const KEY_LEN = 64;
     const salt = await randomBytes(32);
@@ -13,7 +13,7 @@ const generatePassword = async (password: string) => {
     return `${ALGO}:${salt.toString('base64')}:${iter}:${KEY_LEN}:${digest.toString('base64')}`;
 };
 
-const verifyPassword = async (password: string, hashedPassword: string) => {
+export const verifyPassword = async (password: string, hashedPassword: string) => {
     const [algo, encodedSalt, iterStr, keyLenStr, encodedDigest] =
         hashedPassword.split(':');
     const salt = Buffer.from(encodedSalt, 'base64');
@@ -24,5 +24,5 @@ const verifyPassword = async (password: string, hashedPassword: string) => {
     return Buffer.compare(digest, storedDigest) === 0;
 };
 
-//module.exports = { generatePassword, verifyPassword };
-export default { generatePassword, verifyPassword };
+module.exports = { generatePassword, verifyPassword };
+//export default { generatePassword, verifyPassword };

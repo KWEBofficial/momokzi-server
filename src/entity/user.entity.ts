@@ -25,7 +25,7 @@ export default class User {
 
   @Column({
     type: 'varchar',
-    length: 100,
+    length: 512,
     nullable: false,
     comment: '비밀번호',
   })
