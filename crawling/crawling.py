@@ -43,7 +43,7 @@ df['latitude'] = name_data['위도']
 df['longitude'] = name_data['경도']
 df
 
-"""
+
 # 식당 url 얻기
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
@@ -110,7 +110,7 @@ options.add_experimental_option("excludeSwitches", ["enable-logging"])
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 driver.maximize_window()
 
-
+"""
 count = 0 #
 current = 0 #현재 진행 상황
 
