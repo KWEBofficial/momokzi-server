@@ -65,7 +65,7 @@ export const signIn: RequestHandler = async (req, res, next) => {
       id: user.id,
       username: user.username,
     };
-    return res.redirect("/");
+    res.status(201).json(user.id);
   } catch (error) {
     next(error);
   }
