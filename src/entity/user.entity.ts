@@ -1,10 +1,10 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
+//  CreateDateColumn,
+//  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+//  UpdateDateColumn,
 } from 'typeorm';
 
 // 예시 entity입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
@@ -14,18 +14,24 @@ export default class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
-  firstName!: string;
-
   @Column({
     type: 'varchar',
     length: 100,
     nullable: false,
-    default: '김',
-    comment: '사용자의 성',
+    unique: true,
+    comment: '아이디'
   })
-  lastName!: string;
+  username!: string;
 
+  @Column({
+    type: 'varchar',
+    length: 512,
+    nullable: false,
+    comment: '비밀번호',
+  })
+  password!: string;
+
+  /*
   @Column({ nullable: true })
   age?: number;
 
@@ -37,4 +43,5 @@ export default class User {
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt?: Date;
+  */
 }

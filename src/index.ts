@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import session from 'express-session';
 import 'reflect-metadata';
 import AppDataSource from './config/dataSource';
 import './config/env';
@@ -9,6 +10,20 @@ import errorHandler from './util/errorHandler';
 const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
+
+declare module 'express-session' {
+    export interface SessionData {
+        user: { [key: string]: any };
+    }
+}
+
+const SESSION_SECRET = String(process.env);
+
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+}));
 
 AppDataSource.initialize().then(() => console.log('DATABASE is connected!'));
 
