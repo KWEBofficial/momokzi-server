@@ -3,4 +3,7 @@
 export default interface CreateUserInput {
   username: string;
   password: string;
+  nickname: string;
+  age: number;
+  gender: "M" | "F";
 }

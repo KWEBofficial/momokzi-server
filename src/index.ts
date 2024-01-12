@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import session from 'express-session';
+import session, { MemoryStore } from 'express-session';
 import 'reflect-metadata';
 import AppDataSource from './config/dataSource';
 import './config/env';
@@ -11,11 +11,17 @@ const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 
+/*
 declare module 'express-session' {
     export interface SessionData {
-        user: { [key: string]: any };
-    }
+        userid: number;
+        username: string; 
+        nickname: string;
+        age: number;
+        gender: string;
+      }
 }
+*/
 
 const SESSION_SECRET = String(process.env);
 
