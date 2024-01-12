@@ -1,8 +1,8 @@
-const util = require('util');
-const crypt = require('crypto');
+import util from "util";
+import crypto from 'crypto';
 
-const pbkdf2 = util.promisify(crypt.pbkdf2);
-const randomBytes = util.promisify(crypt.randomBytes);
+const pbkdf2 = util.promisify(crypto.pbkdf2);
+const randomBytes = util.promisify(crypto.randomBytes);
 
 export const generatePassword = async (password: string) => {
     const ALGO = 'sha512';

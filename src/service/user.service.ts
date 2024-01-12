@@ -14,13 +14,7 @@ export default class UserService {
     }
   }
 
-  /*static async getUsersByAge(age: number): Promise<User[]> {
-    try {
-      return await UserRepository.find({ where: { age } });
-    } catch (error) {
-      throw new InternalServerError('유저 정보를 불러오는데 실패했습니다.');
-    }
-  }*/
+  
 
   static async saveUser(createUserInput: CreateUserInput): Promise<User> {
     try {
@@ -37,5 +31,6 @@ export default class UserService {
     } catch (error) {
       throw new InternalServerError('유저 정보를 불러오는데 실패했습니다.');
     }
+    
   }
 }

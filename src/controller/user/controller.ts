@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express';
 import UserService from '../../service/user.service';
 import CreateUserInput from '../../type/user/create.input';
-import { BadRequestError, UnauthorizedError } from '../../util/customErrors';
+import { BadRequestError } from '../../util/customErrors';
 const { generatePassword, verifyPassword } = require('../../util/authentication');
 
 // 예시 controller입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
 
-export const getUserById: RequestHandler = async (req, res, next) => {
+/*export const getUserById: RequestHandler = async (req, res, next) => {
   try {
     const id = Number(req.query.id);
 
@@ -17,7 +17,7 @@ export const getUserById: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+};*/
 
 /*export const getUsersByAge: RequestHandler = async (req, res, next) => {
   try {
@@ -30,15 +30,11 @@ export const getUserById: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };*/
-
-export const signUp: RequestHandler = async (req, res, next) => {
+export const signUpForm: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body as CreateUserInput;
 
     if(!username || !password ) throw new BadRequestError("아이디와 비밀번호 모두 입력하세요");
-
-    const sameUsername = await UserService.getUserByUsername(username);
-    if(sameUsername) throw new BadRequestError("이미 존재하는 아이디입니다.");
 
     const hashedPassword = await generatePassword(password);
 
@@ -47,6 +43,27 @@ export const signUp: RequestHandler = async (req, res, next) => {
     const user = await UserService.saveUser(createUserInput);
 
     res.status(201).json(user.id);
+    console.log("회원가입 시도");
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const signUp: RequestHandler = async (req, res, next) => {
+  try {
+    const { username, password } = req.body as CreateUserInput;
+
+    if(!username || !password ) throw new BadRequestError("아이디와 비밀번호 모두 입력하세요");
+
+    const hashedPassword = await generatePassword(password);
+
+    const createUserInput: CreateUserInput = { username, password: hashedPassword };
+
+    const user = await UserService.saveUser(createUserInput);
+
+    res.status(201).json(user.id);
+    console.log("회원가입 시도");
   } catch (error) {
     next(error);
   }
@@ -67,7 +84,7 @@ export const signIn: RequestHandler = async (req, res, next) => {
       id: user.id,
       username: user.username,
     };
-    res.status(201).json(user.id);
+    return res.redirect("/");
   } catch (error) {
     next(error);
   }

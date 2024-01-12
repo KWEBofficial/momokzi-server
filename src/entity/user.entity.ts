@@ -1,15 +1,18 @@
 import {
   Column,
-//  CreateDateColumn,
-//  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-//  UpdateDateColumn,
+  Unique,
 } from 'typeorm';
 
-// 예시 entity입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
+enum Gender {
+  MALE = '남성',
+  FEMALE = '여성',
+  OTHER = '기타',
+}
 
 @Entity()
+@Unique(["username"])
 export default class User {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -31,17 +34,14 @@ export default class User {
   })
   password!: string;
 
-  /*
-  @Column({ nullable: true })
-  age?: number;
+  @Column({
+    type: 'enum',
+    enum: Gender,
+    default: Gender.OTHER,
+  })
+  gender!: Gender;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
+  @Column()
+  nickname!: string;
 
-  @UpdateDateColumn({ type: 'timestamp', nullable: true })
-  updatedAt?: Date;
-
-  @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deletedAt?: Date;
-  */
 }
