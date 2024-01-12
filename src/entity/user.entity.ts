@@ -31,10 +31,20 @@ export default class User {
   })
   password!: string;
 
-  /*
-  @Column({ nullable: true })
-  age?: number;
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: false,
+    comment: '닉네임',
+  })
+  nickname!: string;
 
+  @Column()
+  age!: number;
+
+  @Column()
+  gender!: "M" | "F";
+/*
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
 
