@@ -24,6 +24,21 @@ export default class HistoryService {
 
   static async saveHistory(createHistory: SaveHistory): Promise<History> {
     try {
+      const userId = Number(createHistory.user.id);
+      // 특정 유저의 히스토리 개수 확인
+      const userHistoryCount =
+        await HistoryRepository.getUserHistoryCount(userId);
+      // 히스토리 개수가 maxHistoryCount를 초과하는 경우 가장 오래된 히스토리 삭제
+      const maxHistoryCount = 20;
+      if (userHistoryCount >= maxHistoryCount) {
+        const oldestHistory =
+          await HistoryRepository.getOldestUserHistory(userId);
+
+        if (oldestHistory !== null) {
+          await HistoryRepository.softDelete(oldestHistory.id);
+        }
+      }
+      // 새로운 히스토리 추가
       const HistoryEntity = await HistoryRepository.create(createHistory);
       return await HistoryRepository.save(HistoryEntity);
     } catch (error) {
@@ -33,7 +48,8 @@ export default class HistoryService {
 
   static async deleteHistory(historyId: number, userId: number) {
     try {
-      const writerId = (await HistoryRepository.getHistoryId(historyId)).user.id;
+      const writerId = (await HistoryRepository.getHistoryId(historyId)).user
+        .id;
       if (writerId !== userId)
         throw new BadRequestError('본인의 히스토리만 삭제할 수 있습니다.');
       return await HistoryRepository.softDelete(historyId);
