@@ -1,7 +1,8 @@
-import User from '../../entity/user.entity';
+import GetUser from "../user/getUser";
+
 
 export default interface GetBookmark {
   id?: number;
-  user: User;
+  user: GetUser;
   placeId: string;
 }

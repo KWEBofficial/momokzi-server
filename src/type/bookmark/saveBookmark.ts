@@ -1,6 +1,6 @@
-import User from '../../entity/user.entity';
+import GetUser from '../user/getUser';
 
 export default interface SaveBookmark {
-  user: User;
+  user: GetUser;
   placeId: string;
 }

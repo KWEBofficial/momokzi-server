@@ -1,6 +1,5 @@
 import { BadRequestError, InternalServerError } from '../util/customErrors';
 import GetHistory from '../type/history/getHistory';
-
 import HistoryRepository from '../repository/history.repository';
 import History from '../entity/history.entity';
 import SaveHistory from '../type/history/saveHistory';

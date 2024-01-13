@@ -1,19 +1,16 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
-enum Gender {
-  MALE = '남성',
-  FEMALE = '여성',
-  OTHER = '기타',
-}
+// 예시 entity입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
 
 @Entity()
-@Unique(["username"])
-export default class User {
+@Unique(['username'])
+export default class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -22,7 +19,7 @@ export default class User {
     length: 100,
     nullable: false,
     unique: true,
-    comment: '아이디'
+    comment: '아이디',
   })
   username!: string;
 
@@ -35,13 +32,16 @@ export default class User {
   password!: string;
 
   @Column({
-    type: 'enum',
-    enum: Gender,
-    default: Gender.OTHER,
+    type: 'varchar',
+    length: 100,
+    nullable: false,
+    comment: '닉네임',
   })
-  gender!: Gender;
-
-  @Column()
   nickname!: string;
 
+  @Column()
+  age!: number;
+
+  @Column()
+  gender!: 'M' | 'F';
 }

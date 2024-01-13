@@ -11,15 +11,7 @@ const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 
-declare module 'express-session' {
-    interface SessionData {
-        username: string;
-        isLogin: boolean;
-    
-    }export interface SessionData {
-        user: { [key: string]: any };
-}
-}
+
 
 const SESSION_SECRET = String(process.env);
 
