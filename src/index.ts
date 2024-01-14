@@ -11,14 +11,16 @@ const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 
-
-
 const SESSION_SECRET = String(process.env);
 
 app.use(session({
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: { 
+        maxAge: 3600000,
+        sameSite: 'none',
+    }
 }));
 
 AppDataSource.initialize().then(() => console.log('DATABASE is connected!'));

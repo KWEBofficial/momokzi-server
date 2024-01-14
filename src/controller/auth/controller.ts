@@ -63,12 +63,17 @@ export const signIn: RequestHandler = async (req, res, next) => {
       age: user.age,
       gender: user.gender,
     };
+    
     req.session.save((error) => {
-      if (error) console.log(error);
+      if (error) {
+        console.error('Error saving session:', error);
+        throw error;
+      }
+      console.log('User logged in successfully');
+      console.log(req.session.user);
+      res.status(201).json(user);
     });
 
-    console.log(req.session.user);
-    res.status(201).json(user);
   } catch (error) {
     next(error);
   }
