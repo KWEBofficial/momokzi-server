@@ -9,7 +9,5 @@ const router = Router();
 router.use('/user', userRouter);
 router.use('/history', historyRouter);
 router.use('/bookmark', bookmarkRouter);
-
 router.use('/auth', authRouter);
-router.use('/user', userRouter);
 export default router;

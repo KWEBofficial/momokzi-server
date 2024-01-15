@@ -4,6 +4,7 @@ import { BaseTime } from './baseTime.entity';
 
 @Entity()
 export default class History extends BaseTime {
+  // BaseTime을 종속ㅎ여 생성,삭제 시간 기록
   @PrimaryGeneratedColumn()
   id!: number;
 

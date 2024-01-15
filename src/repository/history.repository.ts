@@ -3,7 +3,8 @@ import History from '../entity/history.entity';
 import { BadRequestError } from '../util/customErrors';
 
 const HistoryRepository = AppDataSource.getRepository(History).extend({
-  async getHistoryId(id: number): Promise<History> {
+  //히스토리 id 찾기
+  async getHistoryById(id: number): Promise<History> {
     return this.findOne({ where: { id }, relations: { user: true } }).then(
       (history) => {
         if (!history)
@@ -12,8 +13,8 @@ const HistoryRepository = AppDataSource.getRepository(History).extend({
       },
     );
   },
-
-  async getUserId(userId: number): Promise<History[]> {
+  //List or delete 시 검증을 위해 user의 id를 찾을 때
+  async getUserById(userId: number): Promise<History[]> {
     return this.find({ where: { user: { id: userId } } });
   },
 
