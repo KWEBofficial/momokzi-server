@@ -7,11 +7,13 @@ import './config/env';
 import router from './controller/router';
 import errorHandler from './util/errorHandler';
 
+const Memorystore = require('memorystore')(session)
+
 const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 
-
+const maxAge = 60 * 1000;
 
 const SESSION_SECRET = String(process.env);
 
@@ -19,6 +21,8 @@ app.use(session({
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: new Memorystore({ checkPeriod: maxAge}),
+    cookie: { maxAge: maxAge }
 }));
 
 AppDataSource.initialize().then(() => console.log('DATABASE is connected!'));

@@ -3,10 +3,6 @@ import UserService from '../../service/user.service';
 import CreateUserInput from '../../type/user/create.input';
 import { BadRequestError, UnauthorizedError } from '../../util/customErrors';
 import GetUser from '../../type/user/getUser';
-import jwt from 'jsonwebtoken';
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const {
   generatePassword,
@@ -51,7 +47,6 @@ export const signUp: RequestHandler = async (req, res, next) => {
 
 export const signIn: RequestHandler = async (req, res, next) => {
   try {
-    const key = process.env.SECRET_KEY;
     const { username, password } = req.body;
     if (!username || !password)
       throw new BadRequestError('아이디와 비밀번호 모두 입력하세요');
@@ -62,19 +57,6 @@ export const signIn: RequestHandler = async (req, res, next) => {
     const isTrue = await verifyPassword(password, user.password);
     if (!isTrue) throw new BadRequestError('비밀번호가 일치하지 않습니다');
 
-    let token = "";
-    token = jwt.sign(
-      {
-        type: "JWT",
-        id: user.id,
-        username: user.username,
-        nickname: user.nickname,
-      },
-      key,
-      {
-        expiresIn: "15m",
-      }
-    )
     req.session.user = {
       id: user.id,
       username: user.username,
