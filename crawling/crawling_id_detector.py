@@ -9,9 +9,8 @@ import sys
 from flask import Flask
 
 #백엔드에서 input.json 받아오기
-# data_from_frontend = json.loads(sys.argv[1])
-# id = data_from_frontend['placeId'] 
-id = 38510364
+data_from_frontend = json.loads(sys.argv[1])
+id = data_from_frontend['placeId'] 
 
 #선택받은 음식점의 메인 화면 불러오기
 url = 'https://pcmap.place.naver.com/restaurant/%s' % (id)
