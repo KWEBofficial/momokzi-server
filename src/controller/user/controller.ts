@@ -21,21 +21,10 @@ export const getUserById: RequestHandler = async (req, res, next) => {
 export const userInfo: RequestHandler = async (req, res, next) => {
   try {
 
-    //console.log(sessionStorage.userid);
-    const id = req.query.id;
-    console.log(id);
-    console.log(`Session in userinfo: ${req.session.user?.id}`);
-    const user = await UserService.getUserById(Number(id));
+    const sessionuser = req.session.user;
+    if(!sessionuser) throw new BadRequestError("please login");
+    const user = await UserService.getUserById(Number(sessionuser.id));
 
-    //res.json(user);
-    //console.log(req.session.user);
-    //const sessionuser = req.session.user as GetUser;
-    //console.log(req.session.user);
-
-    //if (!sessionuser) throw new BadRequestError('');
-    //const user = await UserService.getUserById(Number(sessionuser.id));
-
-    //res.status(200).json(user);
     res.status(200).json(user);
   } catch (error) {
     next(error);
