@@ -24,9 +24,11 @@ export const getHistory: RequestHandler = async (req, res, next) => {
 
 export const getHistoryList: RequestHandler = async (req, res, next) => {
   try {
-    const id = Number(req.session.user?.id);
+    const id = Number(req.query.userid);
+    
     if (!id) throw new BadRequestError('히스토리 목록을 불러올 수 없습니다.');
     const historyList: GetHistoryList = await HistoryService.getHistoryList(id);
+    
     res.status(201).json(historyList);
   } catch (error) {
     next(error);

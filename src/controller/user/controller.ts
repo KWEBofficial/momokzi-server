@@ -27,9 +27,10 @@ export const userInfo: RequestHandler = async (req, res, next) => {
   try {
 
     //console.log(sessionStorage.userid);
-    const username = req.query.userid;
+    const id = req.query.id;
+    console.log(id);
     console.log(req.session.user);
-    const user = await UserService.getUserByUsername(String(username));
+    const user = await UserService.getUserById(Number(id));
 
     //res.json(user);
     //console.log(req.session.user);
