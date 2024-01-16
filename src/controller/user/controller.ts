@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import UserService from '../../service/user.service';
-import { BadRequestError, UnauthorizedError } from '../../util/customErrors';
+import { BadRequestError } from '../../util/customErrors';
 import GetUser from '../../type/user/getUser';
 
 // 예시 controller입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.

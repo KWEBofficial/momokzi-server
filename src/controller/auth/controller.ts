@@ -89,8 +89,6 @@ export const signIn: RequestHandler = async (req, res, next) => {
 
 export const signOut: RequestHandler = async (req, res, next) => {
   try {
-    console.log("logout");
-    console.log(req.session.user);
     req.session.destroy((err: any) => {
       if (err) {
         next(err);
