@@ -29,7 +29,7 @@ export const userInfo: RequestHandler = async (req, res, next) => {
     //console.log(sessionStorage.userid);
     const id = req.query.id;
     console.log(id);
-    console.log(req.session.user);
+    console.log(`Session in userinfo: ${req.session.user?.id}`);
     const user = await UserService.getUserById(Number(id));
 
     //res.json(user);
