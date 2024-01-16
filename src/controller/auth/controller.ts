@@ -4,12 +4,13 @@ import CreateUserInput from '../../type/user/create.input';
 import { BadRequestError, UnauthorizedError } from '../../util/customErrors';
 import GetUser from '../../type/user/getUser';
 
-const {
-  generatePassword,
-  verifyPassword,
-} = require('../../util/authentication');
-
-// 예시 controller입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
+import { getUserById } from '../user/controller';
+import { generatePassword, verifyPassword } from '../../util/authentication';
+declare module 'express-session' {
+  export interface SessionData {
+    user: GetUser;
+  }
+}
 
 export const signUp: RequestHandler = async (req, res, next) => {
   try {
@@ -63,13 +64,24 @@ export const signIn: RequestHandler = async (req, res, next) => {
       nickname: user.nickname,
       age: user.age,
       gender: user.gender,
-    };
-    req.session.save((error) => {
-      if (error) console.log(error);
-    });
+    } as GetUser;
 
-    console.log(req.session.user);
-    res.status(201).json(user);
+    const userRes = {
+      id: user.id,
+      username: user.username,
+      nickname: user.nickname,
+      age: user.age,
+      gender: user.gender,
+    } as GetUser;
+
+    req.session.save((error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Session saved successfully');
+      }
+    });
+    res.status(201).json(userRes);
   } catch (error) {
     next(error);
   }
@@ -80,8 +92,11 @@ export const signOut: RequestHandler = async (req, res, next) => {
     console.log("logout");
     console.log(req.session.user);
     req.session.destroy((err: any) => {
-      if (err) throw err;
-      else return res.status(200);
+      if (err) {
+        next(err);
+      } else {
+        res.status(201).send('Logged out successfully'); //send추가 해줘야 클라에 응답 보내주기 때문
+      }
     });
   } catch (error) {
     next(error);

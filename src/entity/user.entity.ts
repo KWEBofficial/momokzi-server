@@ -9,8 +9,9 @@ import {
 // 예시 entity입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
 
 @Entity()
-@Unique(['username'])
+@Unique(['username']) //중복 방지
 export default class User extends BaseEntity {
+  // BaseTime을 종속ㅎ여 생성,삭제 시간 기록
   @PrimaryGeneratedColumn()
   id!: number;
 

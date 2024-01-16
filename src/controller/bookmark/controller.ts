@@ -6,6 +6,7 @@ import GetBookmarkList from '../../type/bookmark/getBookmarkList';
 import SaveBookmark from '../../type/bookmark/saveBookmark';
 import GetUser from '../../type/user/getUser';
 
+//클라에서 선택한 북마크의 id를 params로 보내주면 관련 placeId 보내줌
 export const getBookmark: RequestHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -16,7 +17,7 @@ export const getBookmark: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
+//북마크 네비게이션바를 클릭하면 현재 로그인 유저의 id에 저장된 북마크 목록 응답
 export const getBookmarkList: RequestHandler = async (req, res, next) => {
   try {
     const id = Number(req.session.user?.id);
@@ -28,7 +29,7 @@ export const getBookmarkList: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
+// 돌리기한 후 북마크,히스토리가 저장될 때 불러올 핸들러
 export const saveBookmark: RequestHandler = async (req, res, next) => {
   try {
     const user = req.session.user;
@@ -42,14 +43,14 @@ export const saveBookmark: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
+//삭제 클릭 시 db에 삭제
 export const deleteBookmark: RequestHandler = async (req, res, next) => {
   try {
-    const bookmarkId = Number(req.params.id);
-    const userId = Number(req.session.user?.id);
+    const bookmarkId = Number(req.params.id); //북마크 아이디 parameter로 줘야 함
+    const userId = Number(req.session.user?.id); // 현재 세션이 있으면 거기서 유저 확인
     if (!userId || !bookmarkId) throw new BadRequestError('유저 정보가 없음.');
 
-    await BookmarkService.deleteBookmark(bookmarkId, userId);
+    await BookmarkService.deleteBookmark(bookmarkId, userId); //유저 인증은 service에서 함
 
     res.status(201).send('히스토리가 삭제 되었습니다.');
   } catch (error) {
