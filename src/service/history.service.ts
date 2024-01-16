@@ -17,7 +17,6 @@ export default class HistoryService {
       const historyList = historys.map((history) => ({
         id: history.id,
         placeId: history.placeId,
-        userId: userId,
       }));
       return { historyList };
     } catch (error) {

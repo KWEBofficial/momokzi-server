@@ -10,6 +10,12 @@ export default class BookmarkService {
   static async getBookmark(bookmarkId: number): Promise<GetBookmark> {
     return await BookmarkRepository.getBookmarkById(bookmarkId);
   }
+
+  //유저id, 음식점id 받아서 북마크에 있는지 확인
+  static async getBookmarkByPlaceId(userId: number, placeId: string): Promise<GetBookmark> {
+    return await BookmarkRepository.getBookmarkByPlaceId(userId, placeId);
+  }
+  
   //북마크 페이지에서 북마크 불러올 때 사용
   static async getBookmarkList(userId: number): Promise<GetBookmarkList> {
     try {
@@ -17,6 +23,7 @@ export default class BookmarkService {
       const bookmarkList = bookmarks.map((bookmark) => ({
         id: bookmark.id,
         placeId: bookmark.placeId,
+        userId: userId,
       }));
       return { bookmarkList };
     } catch (error) {

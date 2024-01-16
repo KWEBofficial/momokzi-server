@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { getHistory } from '../history/controller';
-import { deleteBookmark, getBookmarkList, saveBookmark } from './controller';
+import { getBookmark, deleteBookmark, getBookmarkList, saveBookmark, getBookmarkFromPlaceId } from './controller';
 
 const bookmarkRouter = Router();
 
-bookmarkRouter.get('/:id', getHistory);
-bookmarkRouter.get('/', getBookmarkList);
+bookmarkRouter.get('/list', getBookmarkList);
+bookmarkRouter.get('/place', getBookmarkFromPlaceId);
+bookmarkRouter.get('/:id', getBookmark);
 bookmarkRouter.post('/', saveBookmark);
 bookmarkRouter.delete('/:id', deleteBookmark);
 
