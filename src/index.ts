@@ -8,14 +8,26 @@ import router from './controller/router';
 import errorHandler from './util/errorHandler';
 import { isAuthenticated } from './common/middleware/isAuthenticated';
 
+const Memorystore = require('memorystore')(session)
+
 const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 
+const maxAge = 60 * 1000;
+
 const SESSION_SECRET = String(process.env);
-const MemoryStore = require('memorystore')(session);
-const maxAge = 24 * 60 * 60 * 1000;
+
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: new Memorystore({ checkPeriod: maxAge}),
+    cookie: { maxAge: maxAge }
+}));
+
 AppDataSource.initialize().then(() => console.log('DATABASE is connected!'));
+
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true })); // cookie를 전달하고 싶을 때는 credential을 true로 해줘야 함
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

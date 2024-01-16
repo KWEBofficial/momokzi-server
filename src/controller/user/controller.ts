@@ -20,19 +20,27 @@ export const getUserById: RequestHandler = async (req, res, next) => {
 
 export const userInfo: RequestHandler = async (req, res, next) => {
   try {
-    const sessionuser = req.session.user as GetUser;
-    console.log(req.session.user);
 
-    const user = await UserService.getUserById(Number(sessionuser.id));
-    if (!sessionuser || !user) throw new BadRequestError('');
+    //console.log(sessionStorage.userid);
+    const id = req.query.id;
+    console.log(id);
+    console.log(`Session in userinfo: ${req.session.user?.id}`);
+    const user = await UserService.getUserById(Number(id));
 
-    const userRes = {
-      id: user.id,
-      username: user.username,
-      nickname: user.nickname,
-      age: user.age,
-      gender: user.gender,
-    } as GetUser;
+    //res.json(user);
+    //console.log(req.session.user);
+    //const sessionuser = req.session.user as GetUser;
+    //console.log(req.session.user);
+
+    //if (!sessionuser) throw new BadRequestError('');
+    //const user = await UserService.getUserById(Number(sessionuser.id));
+
+    //res.status(200).json(user);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
 
     res.status(200).json(userRes);
   } catch (error) {

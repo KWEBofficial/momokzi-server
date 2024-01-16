@@ -3,6 +3,7 @@ import UserService from '../../service/user.service';
 import CreateUserInput from '../../type/user/create.input';
 import { BadRequestError, UnauthorizedError } from '../../util/customErrors';
 import GetUser from '../../type/user/getUser';
+
 import { getUserById } from '../user/controller';
 import { generatePassword, verifyPassword } from '../../util/authentication';
 declare module 'express-session' {
@@ -10,6 +11,7 @@ declare module 'express-session' {
     user: GetUser;
   }
 }
+
 export const signUp: RequestHandler = async (req, res, next) => {
   try {
     const { username, password, password2, nickname, age, gender } =
@@ -87,6 +89,7 @@ export const signIn: RequestHandler = async (req, res, next) => {
 
 export const signOut: RequestHandler = async (req, res, next) => {
   try {
+    console.log("logout");
     console.log(req.session.user);
     req.session.destroy((err: any) => {
       if (err) {
