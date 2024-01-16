@@ -3,11 +3,6 @@ import UserService from '../../service/user.service';
 import { BadRequestError, UnauthorizedError } from '../../util/customErrors';
 import GetUser from '../../type/user/getUser';
 
-declare module 'express-session' {
-  export interface SessionData {
-    user: GetUser;
-  }
-}
 // 예시 controller입니다. 필요에 따라 수정하거나 삭제하셔도 됩니다.
 
 export const getUserById: RequestHandler = async (req, res, next) => {
@@ -28,23 +23,19 @@ export const userInfo: RequestHandler = async (req, res, next) => {
     const sessionuser = req.session.user as GetUser;
     console.log(req.session.user);
 
-    if (!sessionuser) throw new BadRequestError('');
     const user = await UserService.getUserById(Number(sessionuser.id));
+    if (!sessionuser || !user) throw new BadRequestError('');
 
-    res.status(200).json(user);
+    const userRes = {
+      id: user.id,
+      username: user.username,
+      nickname: user.nickname,
+      age: user.age,
+      gender: user.gender,
+    } as GetUser;
+
+    res.status(200).json(userRes);
   } catch (error) {
     next(error);
   }
 };
-
-/*export const getUsersByAge: RequestHandler = async (req, res, next) => {
-  try {
-    const age = Number(req.params.age);
-
-    const users = await UserService.getUsersByAge(age);
-
-    res.json(users);
-  } catch (error) {
-    next(error);
-  }
-};*/
