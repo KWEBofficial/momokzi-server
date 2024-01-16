@@ -41,9 +41,3 @@ export const userInfo: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
-    res.status(200).json(userRes);
-  } catch (error) {
-    next(error);
-  }
-};
