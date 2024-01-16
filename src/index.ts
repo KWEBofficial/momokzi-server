@@ -26,7 +26,9 @@ app.use(
     saveUninitialized: true,
     store: new MemoryStore({ checkPeriod: maxAge }),
     cookie: {
+      sameSite: 'none',
       maxAge: maxAge,
+      secure: true,
     },
   }),
 );

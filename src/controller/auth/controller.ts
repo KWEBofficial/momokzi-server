@@ -92,7 +92,7 @@ export const signOut: RequestHandler = async (req, res, next) => {
       if (err) {
         next(err);
       } else {
-        res.status(201).send('Logged out successfully');
+        res.status(201).send('Logged out successfully'); //send추가 해줘야 클라에 응답 보내주기 때문
       }
     });
   } catch (error) {
