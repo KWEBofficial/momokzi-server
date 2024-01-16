@@ -26,9 +26,9 @@ app.use(
     saveUninitialized: true,
     store: new MemoryStore({ checkPeriod: maxAge }),
     cookie: {
-      sameSite: 'none',
+      //sameSite: 'none', //쿠키 정책으로 sameSite가 Lax가 기본인데 none으로 하면 secure 안하면 쿠키전송 불가로 session을 받아올 수가 없어서 테스트 필요
       maxAge: maxAge,
-      secure: true,
+      //secure: true, // 내정보 안되면 samsite, secure 지우기
     },
   }),
 );
