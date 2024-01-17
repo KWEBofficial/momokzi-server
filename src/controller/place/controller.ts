@@ -8,11 +8,12 @@ import PlaceRes from '../../type/place/placeRes';
 
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
-    const body = req.body as PlaceReq;
-    console.log(body);
+    //const body = req.body as PlaceReq;
+    //console.log(body);
     const id = Number(req.query.id);
+    //console.log(id);
     const place = await PlaceService.getPlaceById(id) as PlaceRes;
-    console.log(place);
+    //console.log(place);
     res.status(200).json(place);
   } catch (error) {
     next(error);
