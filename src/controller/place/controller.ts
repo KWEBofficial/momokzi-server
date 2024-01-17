@@ -9,8 +9,9 @@ export const getPlace: RequestHandler = async (req, res, next) => {
     const dataFromFrontend = req.body as PlaceReq;
 
     // TypeScript에서 파이썬 스크립트 실행
+    //npm install --save spawn-npm
     const pythonProcess = spawn('python', [
-      '../../crawling/crawling.py',
+      'crawling/crawling.py',
       JSON.stringify(dataFromFrontend),
     ]);
 
@@ -20,7 +21,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
         // 파이썬 스크립트가 성공적으로 종료된 경우
 
         // JSON 파일 경로
-        const jsonFilePath = '../../output.json';
+        const jsonFilePath = 'output.json';
 
         // JSON 파일 읽기 함수
         function readJsonFile(filePath: string): any {
@@ -56,11 +57,11 @@ export const getPlace: RequestHandler = async (req, res, next) => {
 
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
-    const placeId = req.params.id;
+    const placeId = req.query.id;
 
     // TypeScript에서 파이썬 스크립트 실행
     const pythonProcess = spawn('python', [
-      '../../crawling/crawling_id_detector.py',
+      'crawling/crawling_id_detector.py',
       JSON.stringify(placeId),
     ]);
 
@@ -70,7 +71,7 @@ export const getPlaceById: RequestHandler = async (req, res, next) => {
         // 파이썬 스크립트가 성공적으로 종료된 경우
 
         // JSON 파일 경로
-        const jsonFilePath = '../../output.json';
+        const jsonFilePath = 'output.json';
 
         // JSON 파일 읽기 함수
         function readJsonFile(filePath: string): any {
