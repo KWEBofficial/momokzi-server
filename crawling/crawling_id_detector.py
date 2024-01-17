@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import json
 import sys
-from flask import Flask
 
 #백엔드에서 input.json 받아오기
 data_from_frontend = json.loads(sys.argv[1])
