@@ -1,14 +1,30 @@
 import { RequestHandler } from 'express';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
+import PlaceService from '../../service/place.service';
 import PlaceReq from '../../type/place/placeReq';
 import PlaceRes from '../../type/place/placeRes';
+
+
+export const getPlaceById: RequestHandler = async (req, res, next) => {
+  try {
+    const body = req.body as PlaceReq;
+    console.log(body);
+    const id = Number(req.query.id);
+    const place = await PlaceService.getPlaceById(id) as PlaceRes;
+    console.log(place);
+    res.status(200).json(place);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getPlace: RequestHandler = async (req, res, next) => {
   try {
     const dataFromFrontend = req.body as PlaceReq;
 
     // TypeScript에서 파이썬 스크립트 실행
+    //npm install --save spawn-npm
     const pythonProcess = spawn('python', [
       'crawling/crawling.py',
       JSON.stringify(dataFromFrontend),
@@ -54,6 +70,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
   }
 };
 
+/*
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
     const placeId = req.params.id;
@@ -103,3 +120,4 @@ export const getPlaceById: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+*/
