@@ -4,17 +4,22 @@ import * as fs from 'fs';
 import PlaceService from '../../service/place.service';
 import PlaceReq from '../../type/place/placeReq';
 import PlaceRes from '../../type/place/placeRes';
+import HistoryService from '../../service/history.service';
+import GetUser from '../../type/user/getUser';
 
-const iconv = require('iconv-lite');
-
+declare module 'express-session' {
+  export interface SessionData {
+    user: GetUser;
+  }
+}
 export const getPlaceByDB: RequestHandler = async (req, res, next) => {
   try {
-    //const body = req.body as PlaceReq;
-    //console.log(body);
-    const id = Number(req.query.id);
-    //console.log(id);
+    const id = Number(req.body.id);
     const place = await PlaceService.getPlaceById(id) as PlaceRes;
-    //console.log(place);
+    const user = req.session.user;
+    if(user){
+      await HistoryService.saveHistory({user: user, placeKey: place});
+    }
     res.status(200).json(place);
   } catch (error) {
     next(error);
@@ -31,17 +36,9 @@ export const getPlace: RequestHandler = async (req, res, next) => {
       'crawling/crawling.py',
       JSON.stringify(dataFromFrontend),
     ]);
-    let rs;
-    pythonProcess.stdout.on('data', function (data) {
-      rs = iconv.decode(data, 'euc-kr');
-      console.log(rs);
-    });
-    pythonProcess.stderr.on('data', function (data) {
-      rs = iconv.decode(data, 'euc-kr');
-      console.log(rs);
-    });
+    console.log('crawling start');
     // 파이썬 스크립트가 종료되었을 때 이벤트 핸들러
-    pythonProcess.on('close', (code) => {
+    pythonProcess.on('close', async (code) => {
       if (code === 0) {
         // 파이썬 스크립트가 성공적으로 종료된 경우
 
@@ -66,8 +63,20 @@ export const getPlace: RequestHandler = async (req, res, next) => {
         // 읽어온 JSON 데이터 활용
         if (jsonData) {
           console.log('Read JSON data:', jsonData);
-          res.json(jsonData);
-          // 여기에서 필요한 작업 수행
+          const createPlace: PlaceRes = {
+            placeId: Number(jsonData.placeId),
+            name: jsonData.name,
+            type: jsonData.type,
+            star: jsonData.star,
+            review: Number(jsonData.review),
+            address: jsonData.address,
+            now_working: jsonData.now_working,
+            working_time: jsonData.working_time,
+          };
+
+          const place = await PlaceService.savePlace(createPlace);
+
+          res.status(201).json(place);
         } else {
           console.error('Failed to read JSON data.');
         }
@@ -75,6 +84,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
         console.error(`Python script exited with code ${code}`);
       }
     });
+    
   } catch (error) {
     next(error);
   }
@@ -83,6 +93,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
 
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
+    //const placeId = req.query.placeId;
     const placeId = Number(req.body.id);
     console.log(placeId);
     // TypeScript에서 파이썬 스크립트 실행

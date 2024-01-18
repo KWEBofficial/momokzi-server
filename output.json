@@ -1,10 +1,10 @@
 {
-  "placeId": 1802825387,
-  "name": "오팔식당 신설역점",
-  "type": "찌개,전골",
-  "star": "Not found",
-  "review": "143",
-  "address": "서울 동대문구 천호대로 8 1층 오팔식당",
+  "placeId": "11731381",
+  "name": "전주회관",
+  "type": "육류,고기요리",
+  "star": "4.46",
+  "review": 506,
+  "address": "서울 중구 세종대로14길 32-1",
   "now_working": "영업 중",
-  "working_time": "22:30에 라스트오더"
+  "working_time": "22:30에 영업 종료"
 }
