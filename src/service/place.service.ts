@@ -24,7 +24,8 @@ export default class PlaceService {
   }
   static async getIdByPlaceId(placeId: number): Promise<number> {
     try {
-      return (await PlaceRepository.getIdByPlaceId(placeId)).id;
+      console.log(Number((await PlaceRepository.getIdByPlaceId(placeId)).id));
+      return Number((await PlaceRepository.getIdByPlaceId(placeId)).id);
     } catch (error) {
       throw new InternalServerError('음식점 ID를 불러오는데 실패했습니다.');
     }
