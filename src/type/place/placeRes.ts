@@ -1,5 +1,5 @@
 export default interface PlaceRes {
-  id: number;
+  id?: number;
   placeId: number;
   name: string;
   type: string;

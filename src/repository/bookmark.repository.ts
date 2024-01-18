@@ -21,7 +21,7 @@ const BookmarkRepository = AppDataSource.getRepository(Bookmark).extend({
     });
 
     if (!bookmark) {
-      throw new BadRequestError('히스토리가 존재하지 않습니다.');
+      throw new BadRequestError('북마크가 존재하지 않습니다.');
     }
 
     return {
@@ -43,11 +43,11 @@ const BookmarkRepository = AppDataSource.getRepository(Bookmark).extend({
     userId: number,
     placeId: number,
   ): Promise<Bookmark> {
-    const placeKey = BookmarkRepository.getPlaceByPlaceId(placeId);
+    const placeKey = Number(BookmarkRepository.getPlaceByPlaceId(placeId));
     return this.findOne({
       where: {
         user: { id: userId },
-        place: { id: placeId },
+        place: { id: placeKey },
       },
     }).then((bookmark) => {
       if (!bookmark) throw new BadRequestError('북마크가 존재하지 않습니다.');

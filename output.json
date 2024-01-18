@@ -1,10 +1,10 @@
 {
-  "placeId": 1802825387,
-  "name": "오팔식당 신설역점",
-  "type": "찌개,전골",
-  "star": "Not found",
-  "review": "143",
-  "address": "서울 동대문구 천호대로 8 1층 오팔식당",
-  "now_working": "영업 중",
-  "working_time": "22:30에 라스트오더"
+  "placeId": "20925498",
+  "name": "에이스호프",
+  "type": "맥주,호프",
+  "star": "3.88",
+  "review": 66,
+  "address": "서울 강북구 한천로139길 25",
+  "now_working": "Not found",
+  "working_time": "Not found"
 }

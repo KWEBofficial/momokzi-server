@@ -8,7 +8,9 @@ import { InternalServerError } from '../util/customErrors';
 export default class PlaceService {
   static async getPlaceById(id: number): Promise<Place> {
     try {
-      return await PlaceRepository.getPlaceById(id);
+      const place = await PlaceRepository.findOne({ where: { placeId: id } });
+      if (!place) throw new Error;
+      return place;
     } catch (error) {
       throw new InternalServerError('음식점 정보를 불러오는데 실패했습니다.');
     }
@@ -19,12 +21,12 @@ export default class PlaceService {
       const PlaceEntity = await PlaceRepository.create(createPlace);
       return await PlaceRepository.save(PlaceEntity);
     } catch (error) {
-      throw new InternalServerError('북마크를 저장하는데 실패했습니다.');
+      throw new InternalServerError('음식점 정보를 저장하는데 실패했습니다.');
     }
   }
-  static async getIdByPlaceId(placeId: number): Promise<number> {
+  static async getIdByPlaceId(placeId: number): Promise<Place | null> {
     try {
-      return (await PlaceRepository.getIdByPlaceId(placeId)).id;
+      return await (PlaceRepository.findOne({ where: { placeId } }));
     } catch (error) {
       throw new InternalServerError('음식점 정보를 불러오는데 실패했습니다.');
     }
