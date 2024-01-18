@@ -31,7 +31,7 @@ const HistoryRepository = AppDataSource.getRepository(History).extend({
   },
   //List or delete 시 검증을 위해 user의 id를 찾을 때
   async getUserById(userId: number): Promise<History[]> {
-    return this.find({ where: { user: { id: userId } } });
+    return this.find({ where: { user: { id: userId } }, relations: ['place']  });
   },
 
   async getUserHistoryCount(userId: number): Promise<number> {

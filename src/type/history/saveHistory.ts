@@ -5,6 +5,6 @@ import Place from '../../entity/place.entity';
 
 export default interface SaveHistory {
   id?: number;
-  user: DeepPartial<User>;
-  placeKey: DeepPartial<Place>;
+  user?: DeepPartial<User>;
+  place?: DeepPartial<Place>;
 }

@@ -34,6 +34,7 @@ export const getHistoryList: RequestHandler = async (req, res, next) => {
     const id = Number(sessionuser.id);
     const historyList: GetHistoryList = await HistoryService.getHistoryList(id);
     console.log(historyList);
+    console.log(historyList.historyList[0]);
     res.status(201).json(historyList);
   } catch (error) {
     next(error);
@@ -43,16 +44,18 @@ export const getHistoryList: RequestHandler = async (req, res, next) => {
 export const saveHistory: RequestHandler = async (req, res, next) => {
   try {
     const user = req.session.user;
-    const placeId = Number(req.body.placeId);
-    const place = PlaceService.getPlaceById(placeId);
-
-    console.log(req.body);
-    if (!user || !placeId || !place ) throw new BadRequestError('히스토리 저장 실패');
+    const placeId = Number(req.body.id);
+    const place = await PlaceService.getPlaceById(placeId);
+    console.log(place, user);
+    if (!user || !place) throw new BadRequestError('히스토리 저장 실패');
+    
+    const createHistory: SaveHistory = { user: user as GetUser, place: place };
+    await HistoryService.saveHistory(createHistory);
 
     //const createHistory: SaveHistory = { user: user as GetUser, id: placeId };
     //await HistoryService.saveHistory(createHistory);
 
-    res.status(201).send('히스토리가 저장 되었습니다.');
+    res.status(200).json(place);
   } catch (error) {
     next(error);
   }
