@@ -24,9 +24,11 @@ export default class PlaceService {
       throw new InternalServerError('음식점 정보를 저장하는데 실패했습니다.');
     }
   }
-  static async getIdByPlaceId(placeId: number): Promise<Place | null> {
+  static async getIdByPlaceId(placeId: number): Promise<number> {
     try {
-      return await (PlaceRepository.findOne({ where: { placeId } }));
+      const place = await PlaceRepository.findOne({ where: { placeId: placeId } });
+      if (!place) throw new Error;
+      return place.id;
     } catch (error) {
       throw new InternalServerError('음식점 정보를 불러오는데 실패했습니다.');
     }

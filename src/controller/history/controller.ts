@@ -49,8 +49,8 @@ export const saveHistory: RequestHandler = async (req, res, next) => {
     console.log(req.body);
     if (!user || !placeId || !place ) throw new BadRequestError('히스토리 저장 실패');
 
-    const createHistory: SaveHistory = { user: user as GetUser, placeKey: place };
-    await HistoryService.saveHistory(createHistory);
+    //const createHistory: SaveHistory = { user: user as GetUser, id: placeId };
+    //await HistoryService.saveHistory(createHistory);
 
     res.status(201).send('히스토리가 저장 되었습니다.');
   } catch (error) {

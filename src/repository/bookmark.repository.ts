@@ -35,9 +35,11 @@ const BookmarkRepository = AppDataSource.getRepository(Bookmark).extend({
     return this.find({ where: { user: { id: userId } } });
   },
   // 해당 음식점이 즐겨찾기 등록되어있는지 확인할 때
+  
   async getPlaceByPlaceId(placeId: number): Promise<number> {
     return PlaceService.getIdByPlaceId(placeId);
   },
+  
   // 해당 음식점이 즐겨찾기 등록되어있는지 확인할 때
   async getBookmarkByPlaceId(
     userId: number,
