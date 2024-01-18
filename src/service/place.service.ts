@@ -19,14 +19,14 @@ export default class PlaceService {
       const PlaceEntity = await PlaceRepository.create(createPlace);
       return await PlaceRepository.save(PlaceEntity);
     } catch (error) {
-      throw new InternalServerError('북마크를 저장하는데 실패했습니다.');
+      throw new InternalServerError('음식점을 저장하는데 실패했습니다.');
     }
   }
   static async getIdByPlaceId(placeId: number): Promise<number> {
     try {
       return (await PlaceRepository.getIdByPlaceId(placeId)).id;
     } catch (error) {
-      throw new InternalServerError('음식점 정보를 불러오는데 실패했습니다.');
+      throw new InternalServerError('음식점 ID를 불러오는데 실패했습니다.');
     }
   }
 }

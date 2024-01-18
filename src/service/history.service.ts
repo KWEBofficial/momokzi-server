@@ -26,7 +26,7 @@ export default class HistoryService {
   //히스토리 저장 시 사용
   static async saveHistory(createHistory: SaveHistory): Promise<History> {
     try {
-      const userId = Number(createHistory.user.id);
+      const userId = Number(createHistory.user?.id);
       // 특정 유저의 히스토리 개수 확인
       const userHistoryCount =
         await HistoryRepository.getUserHistoryCount(userId);

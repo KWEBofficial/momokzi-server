@@ -13,6 +13,7 @@ const HistoryRepository = AppDataSource.getRepository(History).extend({
       },
     );
   },
+  //히스토리 id를 넣었을때 유저,place, id 정보 반환
   async getHistoryByIdWithPlace(historyId: number): Promise<History> {
     const history = await this.findOne({
       where: { id: historyId },

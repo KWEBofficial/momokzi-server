@@ -10,6 +10,7 @@ const PlaceRepository = AppDataSource.getRepository(Place).extend({
       return place;
     });
   },
+  //placeId를 place.id(프라임키)로 바꿔주는 기능
   async getIdByPlaceId(placeId: number): Promise<Place> {
     return this.findOne({ where: { placeId } }).then((place) => {
       if (!place) throw new BadRequestError('북마크가 존재하지 않습니다.');

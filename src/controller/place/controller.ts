@@ -18,7 +18,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
     console.log('crawling start');
 
     // 파이썬 스크립트가 종료되었을 때 이벤트 핸들러
-    pythonProcess.on('close', (code) => {
+    pythonProcess.on('close', async (code) => {
       if (code === 0) {
         // 파이썬 스크립트가 성공적으로 종료된 경우
 
@@ -43,9 +43,20 @@ export const getPlace: RequestHandler = async (req, res, next) => {
         // 읽어온 JSON 데이터 활용
         if (jsonData) {
           console.log('Read JSON data:', jsonData);
-          const createPlace: PlaceRes = jsonData;
-          async () => await PlaceService.savePlace(createPlace);
-          res.status(201).json(jsonData);
+          const createPlace: PlaceRes = {
+            placeId: Number(jsonData.placeId),
+            name: jsonData.name,
+            type: jsonData.type,
+            star: jsonData.star,
+            review: Number(jsonData.review),
+            address: jsonData.address,
+            now_working: jsonData.now_working,
+            working_time: jsonData.working_time,
+          };
+
+          const place = await PlaceService.savePlace(createPlace);
+
+          res.status(201).json(place);
           // 여기에서 필요한 작업 수행
         } else {
           console.error('Failed to read JSON data.');
