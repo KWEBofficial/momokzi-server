@@ -5,6 +5,7 @@ import BookmarkService from '../../service/bookmark.service';
 import GetBookmarkList from '../../type/bookmark/getBookmarkList';
 import SaveBookmark from '../../type/bookmark/saveBookmark';
 import GetUser from '../../type/user/getUser';
+import PlaceService from '../../service/place.service';
 
 //클라에서 선택한 북마크의 id를 params로 보내주면 관련 placeId 보내줌
 export const getBookmark: RequestHandler = async (req, res, next) => {
@@ -55,9 +56,10 @@ export const saveBookmark: RequestHandler = async (req, res, next) => {
   try {
     const user = req.session.user;
     const { placeId } = req.body;
+    const placeKey = Number(PlaceService.getIdByPlaceId(placeId));
     if (!user || !placeId) throw new BadRequestError('히스토리 저장 실패');
 
-    const createBookmark: SaveBookmark = { user: user as GetUser, placeId };
+    const createBookmark: SaveBookmark = { user: user as GetUser, placeKey };
     await BookmarkService.saveBookmark(createBookmark);
     res.status(201).send('히스토리가 저장 되었습니다.');
   } catch (error) {

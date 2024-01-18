@@ -5,6 +5,7 @@ import HistoryService from '../../service/history.service';
 import GetHistoryList from '../../type/history/getHistoryList';
 import SaveHistory from '../../type/history/saveHistory';
 import GetUser from '../../type/user/getUser';
+import PlaceService from '../../service/place.service';
 declare module 'express-session' {
   export interface SessionData {
     user: GetUser;
@@ -41,10 +42,12 @@ export const saveHistory: RequestHandler = async (req, res, next) => {
   try {
     const user = req.session.user;
     const placeId = Number(req.body.placeId);
+    const placeKey = Number(PlaceService.getIdByPlaceId(placeId));
+
     console.log(req.body);
     if (!user || !placeId) throw new BadRequestError('히스토리 저장 실패');
 
-    const createHistory: SaveHistory = { user: user as GetUser, placeId };
+    const createHistory: SaveHistory = { user: user as GetUser, placeKey };
     await HistoryService.saveHistory(createHistory);
 
     res.status(201).send('히스토리가 저장 되었습니다.');
