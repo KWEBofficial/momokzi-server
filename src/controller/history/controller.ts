@@ -34,6 +34,7 @@ export const getHistoryList: RequestHandler = async (req, res, next) => {
     const id = Number(sessionuser.id);
     const historyList: GetHistoryList = await HistoryService.getHistoryList(id);
     console.log(historyList);
+    console.log(historyList.historyList[0].place);
     res.status(201).json(historyList);
   } catch (error) {
     next(error);
