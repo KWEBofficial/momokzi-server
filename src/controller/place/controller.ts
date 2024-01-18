@@ -1,19 +1,45 @@
 import { RequestHandler } from 'express';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
+import PlaceService from '../../service/place.service';
 import PlaceReq from '../../type/place/placeReq';
 import PlaceRes from '../../type/place/placeRes';
+
+const iconv = require('iconv-lite');
+
+export const getPlaceByDB: RequestHandler = async (req, res, next) => {
+  try {
+    //const body = req.body as PlaceReq;
+    //console.log(body);
+    const id = Number(req.query.id);
+    //console.log(id);
+    const place = await PlaceService.getPlaceById(id) as PlaceRes;
+    //console.log(place);
+    res.status(200).json(place);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getPlace: RequestHandler = async (req, res, next) => {
   try {
     const dataFromFrontend = req.body as PlaceReq;
 
     // TypeScript에서 파이썬 스크립트 실행
+    //npm install --save spawn-npm
     const pythonProcess = spawn('python', [
       'crawling/crawling.py',
       JSON.stringify(dataFromFrontend),
     ]);
-
+    let rs;
+    pythonProcess.stdout.on('data', function (data) {
+      rs = iconv.decode(data, 'euc-kr');
+      console.log(rs);
+    });
+    pythonProcess.stderr.on('data', function (data) {
+      rs = iconv.decode(data, 'euc-kr');
+      console.log(rs);
+    });
     // 파이썬 스크립트가 종료되었을 때 이벤트 핸들러
     pythonProcess.on('close', (code) => {
       if (code === 0) {
@@ -54,10 +80,11 @@ export const getPlace: RequestHandler = async (req, res, next) => {
   }
 };
 
+
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
-    const placeId = req.params.id;
-
+    const placeId = Number(req.body.id);
+    console.log(placeId);
     // TypeScript에서 파이썬 스크립트 실행
     const pythonProcess = spawn('python', [
       'crawling/crawling_id_detector.py',

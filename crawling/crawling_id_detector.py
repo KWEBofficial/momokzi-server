@@ -6,11 +6,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import json
 import sys
-from flask import Flask
 
 #백엔드에서 input.json 받아오기
 data_from_frontend = json.loads(sys.argv[1])
-id = data_from_frontend['placeId'] 
+id = data_from_frontend
 
 #선택받은 음식점의 메인 화면 불러오기
 url = 'https://pcmap.place.naver.com/restaurant/%s' % (id)
@@ -69,7 +68,7 @@ json_data = {
 json_data = json.dumps(json_data, indent=2, ensure_ascii=False)
 
 # JSON 데이터를 파일로 저장
-with open("output.json", "w") as json_file:
+with open("output.json", "w", encoding='utf-8') as json_file:
     json_file.write(json_data)
 
 print("데이터가 JSON 파일로 저장되었습니다.")

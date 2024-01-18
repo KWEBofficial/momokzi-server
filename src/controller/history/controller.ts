@@ -27,7 +27,7 @@ export const getHistoryList: RequestHandler = async (req, res, next) => {
     const id = Number(req.session.user?.id);
     if (!id) throw new BadRequestError('히스토리 목록을 불러올 수 없습니다.');
     const historyList: GetHistoryList = await HistoryService.getHistoryList(id);
-    console.log(historyList);
+    // console.log(historyList);
     res.status(201).json(historyList);
   } catch (error) {
     next(error);
