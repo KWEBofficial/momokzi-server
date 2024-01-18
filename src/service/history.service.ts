@@ -10,6 +10,15 @@ export default class HistoryService {
   static async getHistory(historyId: number): Promise<GetHistory> {
     return await HistoryRepository.getHistoryByIdWithPlace(historyId);
   }
+
+  //유저id, 음식점id 받아서 북마크에 있는지 확인
+  static async getHistoryByPlaceId(
+    userId: number,
+    placeId: number,
+  ): Promise<GetHistory> {
+    return await HistoryRepository.getHistoryByPlaceId(userId, placeId);
+  }
+
   //히스토리 페이지에서 히스토리 목록을 불러올때 사용
   static async getHistoryList(userId: number): Promise<GetHistoryList> {
     try {
