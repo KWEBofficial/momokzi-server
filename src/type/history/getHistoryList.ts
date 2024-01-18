@@ -5,7 +5,7 @@ import Place from '../../entity/place.entity';
 
 interface History {
   user?: DeepPartial<User>;
-  place?: DeepPartial<Place>;
+  placeid?: number;
 }
 
 export default interface GetHistoryList {

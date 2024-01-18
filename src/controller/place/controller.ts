@@ -16,10 +16,19 @@ export const getPlaceByDB: RequestHandler = async (req, res, next) => {
   try {
     const id = Number(req.body.id);
     const place = await PlaceService.getPlaceById(id) as PlaceRes;
-    const user = req.session.user;
-    if(user){
-      await HistoryService.saveHistory({user: user, place: place});
-    }
+    // const user = req.session.user;
+    // if(user){
+    //   await HistoryService.saveHistory({user: user, place: place});
+    // }
+    res.status(200).json(place);
+  } catch (error) {
+    next(error);
+  }
+};
+export const getPlaceByPlaceId: RequestHandler = async (req, res, next) => {
+  try {
+    const id = Number(req.body.id);
+    const place = await PlaceService.getPlaceById(id) as PlaceRes;
     res.status(200).json(place);
   } catch (error) {
     next(error);

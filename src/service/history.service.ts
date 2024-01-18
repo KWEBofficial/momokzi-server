@@ -16,7 +16,7 @@ export default class HistoryService {
       const historys = await HistoryRepository.getUserById(userId);
       const historyList = historys.map((history) => ({
         id: history.id,
-        place: history.place,
+        placeid: history.place.placeId,
       }));
       return { historyList };
     } catch (error) {
