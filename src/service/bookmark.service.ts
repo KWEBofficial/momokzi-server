@@ -25,7 +25,7 @@ export default class BookmarkService {
       const bookmarks = await BookmarkRepository.getUserById(userId);
       const bookmarkList = bookmarks.map((bookmark) => ({
         id: bookmark.id,
-        place: bookmark.place,
+        placeid: bookmark.place.placeId,
       }));
       return { bookmarkList };
     } catch (error) {

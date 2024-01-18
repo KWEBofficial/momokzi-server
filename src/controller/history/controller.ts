@@ -28,7 +28,7 @@ export const getHistory: RequestHandler = async (req, res, next) => {
 export const getHistoryList: RequestHandler = async (req, res, next) => {
   try {
     const sessionuser = req.session.user as GetUser;
-    console.log(sessionuser);
+    // console.log(sessionuser);
     if (!sessionuser)
       throw new BadRequestError('히스토리 목록을 불러올 수 없습니다.');
     const id = Number(sessionuser.id);

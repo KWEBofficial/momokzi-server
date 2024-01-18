@@ -7,6 +7,12 @@ import SaveBookmark from '../../type/bookmark/saveBookmark';
 import GetUser from '../../type/user/getUser';
 import PlaceService from '../../service/place.service';
 
+declare module 'express-session' {
+  export interface SessionData {
+    user: GetUser;
+  }
+}
+
 //클라에서 선택한 북마크의 id를 params로 보내주면 관련 placeId 보내줌
 export const getBookmark: RequestHandler = async (req, res, next) => {
   try {
@@ -19,14 +25,11 @@ export const getBookmark: RequestHandler = async (req, res, next) => {
   }
 };
 //클라에서 선택한 북마크의 id를 params로 보내주면 관련 placeId 보내줌
-export const getBookmarkFromPlaceId: RequestHandler = async (
-  req,
-  res,
-  next,
-) => {
+export const getBookmarkFromPlaceId: RequestHandler = async (req,res,next) => {
   try {
-    const placeid = Number(req.query.placeid);
+    const placeid = Number(req.query.placeId);
     const userid = req.session.user?.id;
+    console.log(`즐겨찾기-플레이스 아이디: ${placeid}`);
 
     if (!placeid || !userid)
       throw new BadRequestError('북마크를 불러올 수 없습니다.');
@@ -34,6 +37,8 @@ export const getBookmarkFromPlaceId: RequestHandler = async (
       userid,
       placeid,
     );
+    console.log(`즐겨찾기-북마크 아이디: ${placeid}`);
+
     res.status(201).json(bookmark.id);
   } catch (error) {
     next(error);
@@ -42,10 +47,11 @@ export const getBookmarkFromPlaceId: RequestHandler = async (
 //북마크 네비게이션바를 클릭하면 현재 로그인 유저의 id에 저장된 북마크 목록 응답
 export const getBookmarkList: RequestHandler = async (req, res, next) => {
   try {
-    const id = Number(req.session.user?.id);
-    if (!id) throw new BadRequestError('히스토리 목록을 불러올 수 없습니다.');
-    const bookmarkList: GetBookmarkList =
-      await BookmarkService.getBookmarkList(id);
+    const sessionuser = req.session.user as GetUser;
+    if (!sessionuser)
+      throw new BadRequestError('북마크 목록을 불러올 수 없습니다.');
+    const id = Number(sessionuser.id);
+    const bookmarkList: GetBookmarkList = await BookmarkService.getBookmarkList(id);
     res.status(201).json(bookmarkList);
   } catch (error) {
     next(error);
@@ -55,13 +61,15 @@ export const getBookmarkList: RequestHandler = async (req, res, next) => {
 export const saveBookmark: RequestHandler = async (req, res, next) => {
   try {
     const user = req.session.user;
-    const { placeId } = req.body;
-    const place = Number(PlaceService.getIdByPlaceId(placeId));
-    if (!user || !placeId) throw new BadRequestError('히스토리 저장 실패');
+    const placeId = Number(req.body.placeId);
+    // console.log(`bookmark controller saveBookmark ${placeId}`);
+    const place = await PlaceService.getPlaceById(placeId);
+    console.log(`bookmark controller saveBookmark ${place}`);
+    if (!user || !place) throw new BadRequestError('히스토리 저장 실패');
 
-    const createBookmark: SaveBookmark = { user: user as GetUser, id: place };
+    const createBookmark: SaveBookmark = { user: user as GetUser, place: place };
     await BookmarkService.saveBookmark(createBookmark);
-    res.status(201).send('히스토리가 저장 되었습니다.');
+    res.status(201).json(place);
   } catch (error) {
     next(error);
   }
