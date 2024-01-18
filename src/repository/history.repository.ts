@@ -13,6 +13,22 @@ const HistoryRepository = AppDataSource.getRepository(History).extend({
       },
     );
   },
+  async getHistoryByIdWithPlace(historyId: number): Promise<History> {
+    const history = await this.findOne({
+      where: { id: historyId },
+      relations: { place: true, user: true },
+    });
+
+    if (!history) {
+      throw new BadRequestError('히스토리가 존재하지 않습니다.');
+    }
+
+    return {
+      id: history.id,
+      place: history.place, // 이 부분이 히스토리에 연결된 장소 정보입니다.
+      user: history.user,
+    };
+  },
   //List or delete 시 검증을 위해 user의 id를 찾을 때
   async getUserById(userId: number): Promise<History[]> {
     return this.find({ where: { user: { id: userId } } });

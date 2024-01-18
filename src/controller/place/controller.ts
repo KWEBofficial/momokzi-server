@@ -3,17 +3,19 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import PlaceReq from '../../type/place/placeReq';
 import PlaceRes from '../../type/place/placeRes';
+import PlaceService from '../../service/place.service';
 
 export const getPlace: RequestHandler = async (req, res, next) => {
   try {
     const dataFromFrontend = req.body as PlaceReq;
-
     // TypeScript에서 파이썬 스크립트 실행
     //npm install --save spawn-npm
     const pythonProcess = spawn('python', [
       'crawling/crawling.py',
       JSON.stringify(dataFromFrontend),
     ]);
+
+    console.log('crawling start');
 
     // 파이썬 스크립트가 종료되었을 때 이벤트 핸들러
     pythonProcess.on('close', (code) => {
@@ -41,7 +43,9 @@ export const getPlace: RequestHandler = async (req, res, next) => {
         // 읽어온 JSON 데이터 활용
         if (jsonData) {
           console.log('Read JSON data:', jsonData);
-          res.json(jsonData);
+          const createPlace: PlaceRes = jsonData;
+          async () => await PlaceService.savePlace(createPlace);
+          res.status(201).json(jsonData);
           // 여기에서 필요한 작업 수행
         } else {
           console.error('Failed to read JSON data.');
@@ -57,7 +61,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
 
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
-    const placeId = req.query.id;
+    const placeId = req.query.placeId;
 
     // TypeScript에서 파이썬 스크립트 실행
     const pythonProcess = spawn('python', [

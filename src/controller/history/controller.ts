@@ -24,9 +24,13 @@ export const getHistory: RequestHandler = async (req, res, next) => {
 //히스토리 네비게이션바를 클릭하면 현재 로그인 유저의 id에 저장된 북마크 목록 응답
 export const getHistoryList: RequestHandler = async (req, res, next) => {
   try {
-    const id = Number(req.session.user?.id);
-    if (!id) throw new BadRequestError('히스토리 목록을 불러올 수 없습니다.');
+    const sessionuser = req.session.user as GetUser;
+    console.log(sessionuser);
+    if (!sessionuser)
+      throw new BadRequestError('히스토리 목록을 불러올 수 없습니다.');
+    const id = Number(sessionuser.id);
     const historyList: GetHistoryList = await HistoryService.getHistoryList(id);
+    console.log(historyList);
     res.status(201).json(historyList);
   } catch (error) {
     next(error);
@@ -36,7 +40,8 @@ export const getHistoryList: RequestHandler = async (req, res, next) => {
 export const saveHistory: RequestHandler = async (req, res, next) => {
   try {
     const user = req.session.user;
-    const { placeId } = req.body;
+    const placeId = Number(req.body.placeId);
+    console.log(req.body);
     if (!user || !placeId) throw new BadRequestError('히스토리 저장 실패');
 
     const createHistory: SaveHistory = { user: user as GetUser, placeId };

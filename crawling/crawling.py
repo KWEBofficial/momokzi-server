@@ -72,7 +72,6 @@ while i < 10:
         #랜덤으로 식당 추천
         recommended_restaurant = random.choice(df.to_dict('records'))
         print(f"추천 식당: {recommended_restaurant['상호명']}, 행정동명: {recommended_restaurant['행정동명']}")
-
         #식당 정보 찾아오기
         #어떤 좌표에서 음식점을 검색했을 때의 정보 구하기
         url = 'https://map.naver.com/p/api/search/allSearch?query=%s&type=all&searchCoord=%s%%3B%s&boundary=' % (recommended_restaurant['상호명'], user_location[1], user_location[0])
@@ -206,6 +205,8 @@ while i < 10:
         break
     else:
         print("조건에 해당하는 음식점이 없습니다.")
+        break
+
         
         #error 코드 발송 -> 적합한 음식점이 없다는 의미로
         #코드 작성 필요***

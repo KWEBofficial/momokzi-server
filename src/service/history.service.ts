@@ -8,7 +8,7 @@ import GetHistoryList from '../type/history/getHistoryList';
 export default class HistoryService {
   //특정 히스토리 요청시 사용 ex) 히스토리 목록에서 한 히스토리 클릭 시
   static async getHistory(historyId: number): Promise<GetHistory> {
-    return await HistoryRepository.getHistoryById(historyId);
+    return await HistoryRepository.getHistoryByIdWithPlace(historyId);
   }
   //히스토리 페이지에서 히스토리 목록을 불러올때 사용
   static async getHistoryList(userId: number): Promise<GetHistoryList> {
@@ -16,7 +16,7 @@ export default class HistoryService {
       const historys = await HistoryRepository.getUserById(userId);
       const historyList = historys.map((history) => ({
         id: history.id,
-        placeId: history.placeId,
+        place: history.place,
       }));
       return { historyList };
     } catch (error) {
@@ -32,7 +32,7 @@ export default class HistoryService {
         await HistoryRepository.getUserHistoryCount(userId);
       // 히스토리 개수가 maxHistoryCount를 초과하는 경우 가장 오래된 히스토리 삭제
       const maxHistoryCount = 20;
-      if (userHistoryCount > maxHistoryCount) {
+      if (userHistoryCount >= maxHistoryCount) {
         const oldestHistory =
           await HistoryRepository.getOldestUserHistory(userId);
 

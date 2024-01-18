@@ -1,6 +1,8 @@
+import Place from '../../entity/place.entity';
+
 interface Bookmark {
   id?: number;
-  placeId: string;
+  place: Place;
 }
 
 export default interface GetBookmarkList {

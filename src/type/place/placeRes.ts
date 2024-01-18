@@ -1,7 +1,11 @@
 export default interface PlaceRes {
-  username: string;
-  password: string;
-  nickname: string;
-  age: number;
-  gender: 'M' | 'F';
+  id: number;
+  placeId: number;
+  name: string;
+  type: string;
+  star: string;
+  review: number;
+  address: string;
+  now_working: string;
+  working_time: string;
 }

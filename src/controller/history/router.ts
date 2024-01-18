@@ -9,7 +9,7 @@ import {
 const historyRouter = Router();
 
 historyRouter.get('/:id', getHistory);
-historyRouter.get('/', getHistoryList);
+historyRouter.get('/list', getHistoryList);
 historyRouter.post('/', saveHistory);
 historyRouter.delete('/:id', deleteHistory);
 

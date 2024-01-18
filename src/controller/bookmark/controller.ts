@@ -17,6 +17,27 @@ export const getBookmark: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+//클라에서 선택한 북마크의 id를 params로 보내주면 관련 placeId 보내줌
+export const getBookmarkFromPlaceId: RequestHandler = async (
+  req,
+  res,
+  next,
+) => {
+  try {
+    const placeid = Number(req.query.placeid);
+    const userid = req.session.user?.id;
+
+    if (!placeid || !userid)
+      throw new BadRequestError('북마크를 불러올 수 없습니다.');
+    const bookmark: GetBookmark = await BookmarkService.getBookmarkByPlaceId(
+      userid,
+      placeid,
+    );
+    res.status(201).json(bookmark.id);
+  } catch (error) {
+    next(error);
+  }
+};
 //북마크 네비게이션바를 클릭하면 현재 로그인 유저의 id에 저장된 북마크 목록 응답
 export const getBookmarkList: RequestHandler = async (req, res, next) => {
   try {
