@@ -83,7 +83,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
 
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
-    const placeId = String(req.query.id);
+    const placeId = Number(req.body.id);
     console.log(placeId);
     // TypeScript에서 파이썬 스크립트 실행
     const pythonProcess = spawn('python', [
