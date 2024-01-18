@@ -5,8 +5,9 @@ import PlaceService from '../../service/place.service';
 import PlaceReq from '../../type/place/placeReq';
 import PlaceRes from '../../type/place/placeRes';
 
+const iconv = require('iconv-lite');
 
-export const getPlaceById: RequestHandler = async (req, res, next) => {
+export const getPlaceByDB: RequestHandler = async (req, res, next) => {
   try {
     //const body = req.body as PlaceReq;
     //console.log(body);
@@ -30,7 +31,15 @@ export const getPlace: RequestHandler = async (req, res, next) => {
       'crawling/crawling.py',
       JSON.stringify(dataFromFrontend),
     ]);
-
+    let rs;
+    pythonProcess.stdout.on('data', function (data) {
+      rs = iconv.decode(data, 'euc-kr');
+      console.log(rs);
+    });
+    pythonProcess.stderr.on('data', function (data) {
+      rs = iconv.decode(data, 'euc-kr');
+      console.log(rs);
+    });
     // 파이썬 스크립트가 종료되었을 때 이벤트 핸들러
     pythonProcess.on('close', (code) => {
       if (code === 0) {
@@ -71,11 +80,11 @@ export const getPlace: RequestHandler = async (req, res, next) => {
   }
 };
 
-/*
+
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
-    const placeId = req.params.id;
-
+    const placeId = String(req.query.id);
+    console.log(placeId);
     // TypeScript에서 파이썬 스크립트 실행
     const pythonProcess = spawn('python', [
       'crawling/crawling_id_detector.py',
@@ -121,4 +130,3 @@ export const getPlaceById: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-*/

@@ -68,7 +68,7 @@ json_data = {
 json_data = json.dumps(json_data, indent=2, ensure_ascii=False)
 
 # JSON 데이터를 파일로 저장
-with open("output.json", "w") as json_file:
+with open("output.json", "w", encoding='utf-8') as json_file:
     json_file.write(json_data)
 
 print("데이터가 JSON 파일로 저장되었습니다.")
