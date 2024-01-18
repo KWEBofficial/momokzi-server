@@ -17,14 +17,22 @@ export const getBookmark: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
 //클라에서 선택한 북마크의 id를 params로 보내주면 관련 placeId 보내줌
-export const getBookmarkFromPlaceId: RequestHandler = async (req, res, next) => {
+export const getBookmarkFromPlaceId: RequestHandler = async (
+  req,
+  res,
+  next,
+) => {
   try {
-    const placeid = String(req.query.placeid);
+    const placeid = Number(req.query.placeid);
     const userid = req.session.user?.id;
-    if (!placeid || !userid ) throw new BadRequestError('북마크를 불러올 수 없습니다.');
-    const bookmark: GetBookmark = await BookmarkService.getBookmarkByPlaceId(userid, placeid);
+
+    if (!placeid || !userid)
+      throw new BadRequestError('북마크를 불러올 수 없습니다.');
+    const bookmark: GetBookmark = await BookmarkService.getBookmarkByPlaceId(
+      userid,
+      placeid,
+    );
     res.status(201).json(bookmark.id);
   } catch (error) {
     next(error);

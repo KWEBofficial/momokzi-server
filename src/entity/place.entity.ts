@@ -13,8 +13,8 @@ export default class Place extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
-  placeId!: string;
+  @Column({ type: 'int', nullable: false })
+  placeId!: number;
 
   @Column()
   name!: string;

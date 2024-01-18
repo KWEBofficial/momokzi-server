@@ -8,11 +8,14 @@ import { BadRequestError, InternalServerError } from '../util/customErrors';
 export default class BookmarkService {
   //특정 북마크를 불러 올때 사용
   static async getBookmark(bookmarkId: number): Promise<GetBookmark> {
-    return await BookmarkRepository.getBookmarkById(bookmarkId);
+    return await BookmarkRepository.getBookmarkByIdWithPlace(bookmarkId);
   }
 
   //유저id, 음식점id 받아서 북마크에 있는지 확인
-  static async getBookmarkByPlaceId(userId: number, placeId: string): Promise<GetBookmark> {
+  static async getBookmarkByPlaceId(
+    userId: number,
+    placeId: number,
+  ): Promise<GetBookmark> {
     return await BookmarkRepository.getBookmarkByPlaceId(userId, placeId);
   }
   
@@ -22,8 +25,7 @@ export default class BookmarkService {
       const bookmarks = await BookmarkRepository.getUserById(userId);
       const bookmarkList = bookmarks.map((bookmark) => ({
         id: bookmark.id,
-        placeId: bookmark.placeId,
-        userId: userId,
+        place: bookmark.place,
       }));
       return { bookmarkList };
     } catch (error) {

@@ -1,6 +1,8 @@
+import PlaceRes from '../place/placeRes';
+
 interface History {
   id?: number;
-  placeId: string;
+  place: PlaceRes;
 }
 
 export default interface GetHistoryList {

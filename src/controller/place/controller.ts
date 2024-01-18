@@ -31,15 +31,8 @@ export const getPlace: RequestHandler = async (req, res, next) => {
       'crawling/crawling.py',
       JSON.stringify(dataFromFrontend),
     ]);
-    let rs;
-    pythonProcess.stdout.on('data', function (data) {
-      rs = iconv.decode(data, 'euc-kr');
-      console.log(rs);
-    });
-    pythonProcess.stderr.on('data', function (data) {
-      rs = iconv.decode(data, 'euc-kr');
-      console.log(rs);
-    });
+    console.log('crawling start');
+
     // 파이썬 스크립트가 종료되었을 때 이벤트 핸들러
     pythonProcess.on('close', (code) => {
       if (code === 0) {
@@ -66,7 +59,9 @@ export const getPlace: RequestHandler = async (req, res, next) => {
         // 읽어온 JSON 데이터 활용
         if (jsonData) {
           console.log('Read JSON data:', jsonData);
-          res.json(jsonData);
+          const createPlace: PlaceRes = jsonData;
+          async () => await PlaceService.savePlace(createPlace);
+          res.status(201).json(jsonData);
           // 여기에서 필요한 작업 수행
         } else {
           console.error('Failed to read JSON data.');
@@ -83,6 +78,7 @@ export const getPlace: RequestHandler = async (req, res, next) => {
 
 export const getPlaceById: RequestHandler = async (req, res, next) => {
   try {
+    //const placeId = req.query.placeId;
     const placeId = Number(req.body.id);
     console.log(placeId);
     // TypeScript에서 파이썬 스크립트 실행

@@ -1,5 +1,6 @@
 export default interface PlaceRes {
-  placeId: string;
+  id: number;
+  placeId: number;
   name: string;
   type: string;
   star: string;
