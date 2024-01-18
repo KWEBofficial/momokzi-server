@@ -18,7 +18,7 @@ export const getPlaceByDB: RequestHandler = async (req, res, next) => {
     const place = await PlaceService.getPlaceById(id) as PlaceRes;
     const user = req.session.user;
     if(user){
-      await HistoryService.saveHistory({user: user, placeKey: place});
+      await HistoryService.saveHistory({user: user, place: place});
     }
     res.status(200).json(place);
   } catch (error) {

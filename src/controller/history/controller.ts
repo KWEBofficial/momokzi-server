@@ -44,10 +44,12 @@ export const saveHistory: RequestHandler = async (req, res, next) => {
   try {
     const user = req.session.user;
     const placeId = Number(req.body.placeId);
-    const place = PlaceService.getPlaceById(placeId);
-
-    console.log(req.body);
-    if (!user || !placeId || !place ) throw new BadRequestError('히스토리 저장 실패');
+    const place = await PlaceService.getPlaceById(placeId);
+    console.log(place, user);
+    if (!user || !place) throw new BadRequestError('히스토리 저장 실패');
+    
+    const createHistory: SaveHistory = { user: user as GetUser, place: place };
+    await HistoryService.saveHistory(createHistory);
 
     //const createHistory: SaveHistory = { user: user as GetUser, id: placeId };
     //await HistoryService.saveHistory(createHistory);
