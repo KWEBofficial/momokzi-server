@@ -48,7 +48,7 @@ export default class BookmarkService {
       //북마크가 본인의 북마크인지 검증
       if (writerId !== userId)
         throw new BadRequestError('본인의 북마크만 삭제할 수 있습니다.');
-      return await BookmarkRepository.softDelete(id);
+      return await BookmarkRepository.delete(id);
     } catch (error) {
       throw new InternalServerError('알 수 없는 오류');
     }

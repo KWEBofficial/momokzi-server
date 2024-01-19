@@ -65,13 +65,7 @@ export const saveBookmark: RequestHandler = async (req, res, next) => {
     const placeId = Number(req.body.placeId);
     // console.log(`bookmark controller saveBookmark ${placeId}`);
     if (!userId) throw new BadRequestError('히스토리 저장 실패');
-    const bookmark: GetBookmark = await BookmarkService.getBookmarkByPlaceId(
-      userId,
-      placeId,
-    );
-    if(bookmark) {
-      res.status(202).json(bookmark.id);
-    }
+    
     const place = await PlaceService.getPlaceById(placeId);
     console.log(`bookmark controller saveBookmark ${place}`);
     if (!user || !place) throw new BadRequestError('히스토리 저장 실패');
