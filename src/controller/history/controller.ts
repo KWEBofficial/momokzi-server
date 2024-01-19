@@ -28,13 +28,13 @@ export const getHistory: RequestHandler = async (req, res, next) => {
 export const getHistoryList: RequestHandler = async (req, res, next) => {
   try {
     const sessionuser = req.session.user as GetUser;
-    console.log(sessionuser);
+    // console.log(sessionuser);
     if (!sessionuser)
       throw new BadRequestError('히스토리 목록을 불러올 수 없습니다.');
     const id = Number(sessionuser.id);
     const historyList: GetHistoryList = await HistoryService.getHistoryList(id);
-    console.log(historyList);
-    console.log(historyList.historyList[0]);
+    // console.log(historyList);
+    // console.log(historyList.historyList[0]);
     res.status(201).json(historyList);
   } catch (error) {
     next(error);
@@ -46,7 +46,7 @@ export const saveHistory: RequestHandler = async (req, res, next) => {
     const user = req.session.user;
     const placeId = Number(req.body.id);
     const place = await PlaceService.getPlaceById(placeId);
-    console.log(place, user);
+    // console.log(place, user);
     if (!user || !place) throw new BadRequestError('히스토리 저장 실패');
     
     const createHistory: SaveHistory = { user: user as GetUser, place: place };
@@ -70,6 +70,26 @@ export const deleteHistory: RequestHandler = async (req, res, next) => {
     await HistoryService.deleteHistory(historyId, userId); //유저 인증은 service에서 함
 
     res.send('히스토리가 삭제 되었습니다.');
+  } catch (error) {
+    next(error);
+  }
+};
+
+//클라에서 선택한 플레이스의 id를 params로 보내주면 관련 북마크아이디 보내줌
+export const getHistoryFromPlaceId: RequestHandler = async (req, res, next) => {
+  try {
+    const placeid = Number(req.query.placeId);
+    const userid = req.session.user?.id;
+    console.log(`플레이스 아이디: ${placeid}`);
+
+    if (!placeid || !userid)
+      throw new BadRequestError('북마크를 불러올 수 없습니다.');
+    const history: GetHistory = await HistoryService.getHistoryByPlaceId(
+      userid,
+      placeid,
+    );
+    console.log(`히스토리 아이디: ${history.id}`);
+    res.status(201).json(history.id);
   } catch (error) {
     next(error);
   }

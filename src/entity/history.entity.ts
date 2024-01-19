@@ -15,4 +15,5 @@ export default class History extends BaseTime {
   
   @ManyToOne(() => Place, (place) => place.id)
   place!: Place;
+
 }

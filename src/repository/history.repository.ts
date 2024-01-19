@@ -1,5 +1,6 @@
 import AppDataSource from '../config/dataSource';
 import History from '../entity/history.entity';
+import PlaceService from '../service/place.service';
 import { BadRequestError } from '../util/customErrors';
 
 const HistoryRepository = AppDataSource.getRepository(History).extend({
@@ -42,6 +43,27 @@ const HistoryRepository = AppDataSource.getRepository(History).extend({
     return this.findOne({
       where: { user: { id: userId } },
       order: { createdAt: 'ASC' },
+    });
+  },
+
+  async getPlaceByPlaceId(placeId: number): Promise<number> {
+    return PlaceService.getIdByPlaceId(placeId);
+  },
+  // 해당 음식점이 즐겨찾기 등록되어있는지 확인할 때
+  async getHistoryByPlaceId(
+    userId: number,
+    placeId: number,
+  ): Promise<History> {
+    const placeKey = await PlaceService.getIdByPlaceId(placeId);
+    console.log(`플레이스고유키 구함: ${placeKey}`);
+    return this.findOne({
+      where: {
+        user: { id: userId },
+        place: { id: placeKey },
+      },
+    }).then((history) => {
+      if (!history) throw new BadRequestError('북마크가 존재하지 않습니다.');
+      return history;
     });
   },
 });

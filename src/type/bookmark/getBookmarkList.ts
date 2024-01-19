@@ -1,8 +1,10 @@
 import Place from '../../entity/place.entity';
+import { DeepPartial } from 'typeorm';
+import User from '../../entity/user.entity';
 
 interface Bookmark {
-  id?: number;
-  place: Place;
+  user?: DeepPartial<User>;
+  placeid?: number;
 }
 
 export default interface GetBookmarkList {
